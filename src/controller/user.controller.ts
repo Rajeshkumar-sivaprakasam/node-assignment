@@ -22,10 +22,21 @@ exports.create = async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
-    res.status(400).send({ Error: 'failing to save' });
+    res.status(500).send({ Error: constant.INTERNAL_SERVER_ERROR });
   }
 };
 
+exports.login = async (req, res) => {
+  try {
+    //finding user by cred
+    const user = await UserModel.findUserByCredentials(req.body.email, req.body.password);
+    //getting token
+    const token = await user.generateAuthToken();
+    res.status(200).send({ user, token });
+  } catch (e) {
+    res.status(500).send({ Error: constant.INTERNAL_SERVER_ERROR });
+  }
+};
 // Retrieve and return all notes from the database.
 exports.findAll = (req, res) => {};
 
@@ -33,7 +44,24 @@ exports.findAll = (req, res) => {};
 exports.findOne = (req, res) => {};
 
 // Update a note identified by the noteId in the request
-exports.update = (req, res) => {};
+exports.update = async (req, res, next) => {
+  const { addressLine1, city, state, zip } = req.body;
+  if (!addressLine1 || !city || !state || !zip) {
+    res.status(400).send(constant.BAD_REQ);
+    next();
+    return;
+  }
+  const data = { addressLine1, city, state, zip };
+  const email = req.user.email;
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(email, data, { new: true });
+    if (updatedUser) {
+      res.status(200).send({ success: true, user: updatedUser });
+    }
+  } catch (e) {
+    res.status(500).send({ Error: constant.INTERNAL_SERVER_ERROR });
+  }
+};
 
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {};

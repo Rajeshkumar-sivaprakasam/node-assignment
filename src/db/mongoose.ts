@@ -2,11 +2,10 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config(); //dotenv configed
-const MongooseURI = process.env.MongooseURI;
 
 //mongoose connect
 mongoose
-  .connect(MongooseURI, {
+  .connect(process.env.Mongoose_URI, {
     useNewUrlParser: true,
   })
   .then(() => {
