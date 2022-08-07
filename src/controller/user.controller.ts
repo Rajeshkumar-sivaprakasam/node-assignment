@@ -1,7 +1,7 @@
 const UserModel = require('../models/user.model');
 const constant = require('../helpers/constant');
 
-// Create and Save a new Note
+// Create and Save a new user
 exports.create = async (req, res) => {
   if (!req.body.email && !req.body.firstName && !req.body.lastName && !req.body.password) {
     res.status(400).send({ error: constant.BAD_REQ });
@@ -37,13 +37,13 @@ exports.login = async (req, res) => {
     res.status(500).send({ Error: constant.INTERNAL_SERVER_ERROR });
   }
 };
-// Retrieve and return all notes from the database.
+// Retrieve and return all
 exports.findAll = (req, res) => {};
 
-// Find a single note with a noteId
+// Find one
 exports.findOne = (req, res) => {};
 
-// Update a note identified by the noteId in the request
+// Update
 exports.update = async (req, res, next) => {
   const { addressLine1, city, state, zip } = req.body;
   if (!addressLine1 || !city || !state || !zip) {
@@ -63,6 +63,7 @@ exports.update = async (req, res, next) => {
   }
 };
 
-// Delete a note with the specified noteId in the request
+// Delete
 exports.delete = (req, res) => {};
+
 export {};

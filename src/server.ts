@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const userRouter = require('./routes/user.router');
 const hbs = require('hbs');
+const morgan = require('morgan');
 
 require('./db/mongoose.ts');
 
@@ -19,6 +20,8 @@ app.set('view engine', 'hbs');
 
 app.use(express.json()); // allowing express app to send json
 app.use(express.urlencoded({ extended: true })); //express defaulting haivng this bodyparser things to handle post req
+//morgon combined
+app.use(morgan(':method :status :url "HTTP/:http-version"'));
 
 app.set('view engine', 'hbs'); //hbs setup //Dynamic web pages
 app.set('views', viewPath); //view path
